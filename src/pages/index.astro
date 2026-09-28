@@ -57,17 +57,18 @@ const brands = [
 <Layout title={`${site.name}: închirieri sonorizare și echipamente DJ în ${site.city}`}>
   <!-- HERO -->
   <section class="relative isolate flex min-h-[calc(92vh-var(--header-h))] items-center overflow-hidden">
-    <img src={unsplash('photo-1563680401337-b77b5e0be9f7', 2000, 1200)} alt="" width="2000" height="1200" fetchpriority="high" class="hero-bg absolute inset-0 -z-20 h-full w-full object-cover" />
-    <div class="absolute inset-0 -z-10 bg-bg/85"></div>
+    <!-- TODO(real): înlocuit cu o poză reală de la un eveniment al clientului, din același unghi -->
+    <img src={u('/img/hero.webp')} alt="" width="2400" height="1344" fetchpriority="high" class="hero-bg absolute inset-0 -z-20 h-full w-full object-cover object-[65%_50%]" />
+    <div class="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_60%_65%_at_50%_48%,rgba(18,17,16,0.82),rgba(18,17,16,0.5)_75%,rgba(18,17,16,0.35))]"></div>
     <div class="absolute inset-x-0 bottom-0 -z-10 h-48 bg-gradient-to-t from-bg to-transparent"></div>
 
     <div class="wrap py-20 text-center">
-      <span class="hero-in inline-flex items-center gap-2.5 rounded-lg border border-primary/40 bg-primary/10 px-4 py-1.5 text-sm font-medium text-primary" style="--d:0">
+      <span class="hero-in inline-flex items-center gap-2.5 rounded-lg border border-primary/40 bg-primary/10 px-4 py-1.5 text-sm font-medium text-accent" style="--d:0">
         <span class="eq h-3"><i></i><i></i><i></i><i></i></span>
         Închirieri sonorizare în {site.city}
       </span>
       <h1 class="hero-in mx-auto mt-7 max-w-4xl text-[clamp(2.4rem,6vw,4.5rem)] font-bold tracking-[-0.025em]" style="--d:1">
-        Boxe, DJ și lumini <span class="text-primary">montate</span> înainte să vină invitații
+        Boxe, DJ și lumini <span class="text-accent">montate</span> înainte să vină invitații
       </h1>
       <p class="hero-in mx-auto mt-6 max-w-2xl text-lg text-muted" style="--d:2">
         Închiriem pe zi sonorizare RCF, QSC și Pioneer DJ. Le ridici din depozitul din Sectorul 2 sau venim noi, montăm și facem proba de sunet cu tine.
@@ -125,7 +126,7 @@ const brands = [
         {categories.map((c, i) => (
           <li data-reveal style={`--i:${i % 3}`}>
             <a href={u(`/echipamente?cat=${c.id}`)} class="card group flex h-full flex-col p-7 transition-colors hover:border-primary/50">
-              <span class="grid h-12 w-12 place-items-center rounded-xl border border-line bg-secondary text-primary transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:-rotate-6 group-hover:scale-110"><Icon name={c.icon} size={22} /></span>
+              <span class="grid h-12 w-12 place-items-center rounded-xl border border-line bg-secondary text-accent transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:-rotate-6 group-hover:scale-110"><Icon name={c.icon} size={22} /></span>
               <h3 class="mt-5 font-bold">{c.label}</h3>
               <p class="mt-1.5 text-sm text-muted">{c.desc}</p>
             </a>
@@ -133,7 +134,7 @@ const brands = [
         ))}
         <li data-reveal style="--i:2">
           <a href="#pachete" class="card group flex h-full flex-col p-7 transition-colors hover:border-primary/50">
-            <span class="grid h-12 w-12 place-items-center rounded-xl border border-line bg-secondary text-primary transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:-rotate-6 group-hover:scale-110"><Icon name="package" size={22} /></span>
+            <span class="grid h-12 w-12 place-items-center rounded-xl border border-line bg-secondary text-accent transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:-rotate-6 group-hover:scale-110"><Icon name="package" size={22} /></span>
             <h3 class="mt-5 font-bold">Pachete complete</h3>
             <p class="mt-1.5 text-sm text-muted">Seturi gata făcute după numărul de invitați</p>
           </a>
@@ -150,7 +151,7 @@ const brands = [
           <h2 id="pop-title" class="text-[clamp(1.75rem,3vw,2.25rem)] font-bold">Echipamente populare</h2>
           <p class="mt-3 max-w-md text-muted">Ce pleacă cel mai des din depozit vinerea: boxe de 12″, subwoofere și microfoane wireless.</p>
         </div>
-        <a href={u('/echipamente')} class="text-sm font-semibold text-primary underline-offset-4 hover:underline">Vezi toate echipamentele</a>
+        <a href={u('/echipamente')} class="text-sm font-semibold text-accent underline-offset-4 hover:underline">Vezi toate echipamentele</a>
       </div>
       <div class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {popular.map((item, i) => (
@@ -176,7 +177,7 @@ const brands = [
             <p class="tnum mt-5"><span class="text-3xl font-bold text-price">{p.price.toLocaleString('ro-RO')} RON</span><span class="text-muted"> / zi</span></p>
             <ul class="mt-6 flex-1 space-y-2.5 border-t border-line pt-6 text-sm">
               {p.items.map((it) => (
-                <li class="flex gap-2.5"><svg class="mt-1 shrink-0 text-primary" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>{it}</li>
+                <li class="flex gap-2.5"><svg class="mt-1 shrink-0 text-accent" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>{it}</li>
               ))}
             </ul>
             <button type="button" data-add={p.id} data-open class={`btn mt-7 w-full ${p.featured ? 'btn-primary' : 'btn-secondary'}`}>
@@ -196,7 +197,7 @@ const brands = [
           <h2 id="dj-title" class="text-[clamp(1.75rem,3vw,2.25rem)] font-bold">Evenimente {site.djName}</h2>
           <p class="mt-3 max-w-lg text-muted">Pe lângă închirieri, cântăm și ca DJ la nunți, petreceri corporate și în cluburi. Câteva dintre evenimentele recente:</p>
         </div>
-        <a href={u('/evenimente')} class="text-sm font-semibold text-primary underline-offset-4 hover:underline">Vezi toate evenimentele</a>
+        <a href={u('/evenimente')} class="text-sm font-semibold text-accent underline-offset-4 hover:underline">Vezi toate evenimentele</a>
       </div>
       <div class="mt-10 grid gap-5 md:grid-cols-3">
         {recentEvents.map((e, i) => {
@@ -230,12 +231,12 @@ const brands = [
         <span class="progress-line absolute bottom-8 left-6 top-6 w-px bg-primary" data-progress-bar aria-hidden="true"></span>
         {steps.map((s, i) => (
           <li class="step relative flex gap-6 pb-10 last:pb-0" data-step data-reveal>
-            <span class="step-dot relative z-10 grid h-12 w-12 shrink-0 place-items-center rounded-xl border border-line bg-card text-primary transition-colors duration-300"><Icon name={s.icon} size={20} /></span>
+            <span class="step-dot relative z-10 grid h-12 w-12 shrink-0 place-items-center rounded-xl border border-line bg-card text-accent transition-colors duration-300"><Icon name={s.icon} size={20} /></span>
             <div class="pt-0.5">
               <p class="eyebrow">Pasul {i + 1}</p>
               <h3 class="mt-1 text-lg font-bold">{s.title}</h3>
               <p class="mt-2 text-sm leading-relaxed text-muted">{s.text}</p>
-              {s.link && <a href={u(s.link.href)} class="mt-3 inline-block text-sm font-semibold transition-colors hover:text-primary">{s.link.label}</a>}
+              {s.link && <a href={u(s.link.href)} class="mt-3 inline-block text-sm font-semibold transition-colors hover:text-accent">{s.link.label}</a>}
             </div>
           </li>
         ))}
@@ -250,7 +251,7 @@ const brands = [
         <h2 id="rev-title">Ce spun clienții</h2>
         <p>Din recenziile lăsate pe Google după evenimente.</p>
         <!-- TODO(real): link către profilul Google Business -->
-        <a href="#contact" class="group mt-4 inline-flex items-center gap-2 text-sm font-semibold text-primary">Vezi toate recenziile pe Google <Icon name="external" size={15} class="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" /></a>
+        <a href="#contact" class="group mt-4 inline-flex items-center gap-2 text-sm font-semibold text-accent">Vezi toate recenziile pe Google <Icon name="external" size={15} class="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" /></a>
       </div>
       <div class="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
         {reviews.map((r, i) => (
@@ -273,7 +274,7 @@ const brands = [
       <div class="section-head" data-reveal>
         <h2 id="contact-title">Unde ne găsiți</h2>
         <p>Ridici echipamentele de la depozit sau le livrăm și le montăm noi la locația evenimentului.</p>
-        <div class="mt-5 flex flex-wrap justify-center gap-5 text-sm font-semibold text-primary">
+        <div class="mt-5 flex flex-wrap justify-center gap-5 text-sm font-semibold text-accent">
           <a href={site.phoneHref} class="inline-flex items-center gap-2 hover:underline"><Icon name="phone" size={16} />{site.phone}</a>
           <a href="https://maps.google.com/?q=Bucuresti+Sector+2" target="_blank" rel="noopener" class="inline-flex items-center gap-2 hover:underline">Deschide în Google Maps <Icon name="external" size={15} /></a>
         </div>

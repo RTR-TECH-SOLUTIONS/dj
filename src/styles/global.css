@@ -1,7 +1,9 @@
 @import 'tailwindcss';
 
 /* Structura vine din referința clientului (rentech.ro); paleta e proprie:
-   „grafit” (negru cald, cu nuanță maronie) + un singur accent crem, folosit și la prețuri. */
+   „grafit” (negru cald, cu nuanță maronie) + un singur accent roșu „ON AIR”.
+   --color-primary = fundal de buton (text alb, contrast AA); --color-accent = aceeași culoare,
+   mai deschisă, pentru text și iconițe pe fundal închis. Prețurile rămân în alb-cald. */
 @theme {
   --color-bg: #121110;
   --color-bg-alt: #171514;
@@ -11,10 +13,11 @@
   --color-line-strong: #4a443e;
   --color-ink: #f2eee8;
   --color-muted: #a59d93;
-  --color-primary: #efe6d6;
-  --color-primary-hover: #ddd2bf;
-  --color-price: #efe6d6;
-  --color-on-primary: #121110;
+  --color-primary: #d63a2f;
+  --color-primary-hover: #c0322a;
+  --color-accent: #ef5a4c;
+  --color-price: #f2eee8;
+  --color-on-primary: #ffffff;
 
   --font-sans: 'Space Grotesk', system-ui, sans-serif;
 
@@ -69,7 +72,7 @@
     gap: 0.5rem;
     font-size: 0.8rem;
     font-weight: 600;
-    color: var(--color-primary);
+    color: var(--color-accent);
   }
   .kicker::before {
     content: '';
