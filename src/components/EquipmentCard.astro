@@ -20,7 +20,7 @@ const search = `${item.name} ${cat.label} ${cat.keywords} ${item.desc}`.toLowerC
       decoding="async"
       class="absolute inset-0 h-full w-full object-contain p-8 drop-shadow-[0_18px_24px_rgba(0,0,0,0.45)] transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.06] group-hover:-translate-y-1"
     />
-    <span class={`absolute right-3 top-3 rounded-md bg-bg/80 px-2 py-1 text-xs font-medium backdrop-blur ${item.stock <= 2 ? 'text-primary' : 'text-muted'}`}>{item.stock <= 2 ? `Doar ${item.stock} în depozit` : `${item.stock} buc. în depozit`}</span>
+    <span class={`absolute right-3 top-3 rounded-md bg-bg/80 px-2 py-1 text-xs font-medium backdrop-blur ${item.stock <= 2 ? 'text-accent' : 'text-muted'}`}>{item.stock <= 2 ? `Doar ${item.stock} în depozit` : `${item.stock} buc. în depozit`}</span>
   </div>
   <div class="flex flex-1 flex-col border-t border-line/60 p-5">
     <p class="eyebrow">{cat.label}</p>

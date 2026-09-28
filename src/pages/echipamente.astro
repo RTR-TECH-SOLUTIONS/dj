@@ -31,7 +31,7 @@ import { site } from '../data/site';
             </button>
             {categories.map((c) => (
               <button type="button" data-filter={c.id} aria-pressed="false" class="cat-btn">
-                <span class="inline-flex items-center gap-2.5"><Icon name={c.icon} size={16} class="text-primary" />{c.label}</span>
+                <span class="inline-flex items-center gap-2.5"><Icon name={c.icon} size={16} class="text-accent" />{c.label}</span>
                 <span class="tnum text-muted">{equipment.filter((e) => e.category === c.id).length}</span>
               </button>
             ))}
