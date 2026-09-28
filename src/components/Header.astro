@@ -1,0 +1,81 @@
+---
+import { u } from '../lib/url';
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import { site } from '../data/site';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const path = Astro.url.pathname.replace(base, '').replace(/\/$/, '') || '/';
+const links = [
+  { href: '/echipamente', label: 'Echipamente' },
+  { href: '/#pachete', label: 'Pachete' },
+  { href: '/evenimente', label: 'Evenimente DJ' },
+  { href: '/#cum-inchiriezi', label: 'Cum închiriezi' },
+  { href: '/#contact', label: 'Contact' },
+];
+---
+
+<header class="fixed inset-x-0 top-0 z-50 border-b border-transparent bg-bg/0 transition-[background-color,border-color,box-shadow] duration-300 [&.is-scrolled]:border-line/60 [&.is-scrolled]:bg-bg/85 [&.is-scrolled]:shadow-[0_10px_30px_-12px_rgba(0,0,0,0.6)] [&.is-scrolled]:backdrop-blur-md" style="height:var(--header-h)">
+  <div class="wrap flex h-full items-center justify-between gap-4">
+    <a href={u('/')} aria-label={`${site.name}: acasă`} class="shrink-0"><Logo /></a>
+
+    <div class="flex items-center gap-2">
+      <nav aria-label="Principal" class="mr-2 hidden lg:block">
+        <ul class="flex items-center gap-1">
+          {links.map((l) => (
+            <li>
+              <a
+                href={u(l.href)}
+                aria-current={path === l.href ? 'page' : undefined}
+                class="nav-link relative rounded-lg px-2.5 py-2 text-sm font-medium text-muted transition-colors hover:text-ink aria-[current=page]:text-ink"
+              >{l.label}</a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+      <button type="button" data-cart-open class="btn btn-secondary relative h-10 rounded-xl px-3.5 text-sm" aria-label="Deschide coșul">
+        <Icon name="cart" size={17} />
+        <span class="hidden sm:inline">Coș</span>
+        <span data-cart-count class="tnum absolute -right-1.5 -top-1.5 hidden h-5 min-w-5 place-items-center rounded-full bg-primary px-1 text-[0.7rem] font-bold text-on-primary">0</span>
+      </button>
+      <a href={site.phoneHref} class="btn btn-secondary hidden h-10 rounded-xl px-3.5 text-sm sm:inline-flex">
+        <Icon name="phone" size={16} />
+        Sună-ne
+      </a>
+      <button type="button" class="btn btn-secondary h-10 rounded-xl px-3 lg:hidden" data-menu-toggle aria-expanded="false" aria-controls="mobile-menu" aria-label="Meniu">
+        <Icon name="menu" size={18} />
+      </button>
+    </div>
+  </div>
+
+  <nav id="mobile-menu" aria-label="Mobil" class="hidden border-b border-line bg-bg lg:hidden">
+    <ul class="wrap flex flex-col py-2">
+      {links.map((l) => (
+        <li><a href={u(l.href)} class="block border-b border-line/60 py-3.5 font-medium">{l.label}</a></li>
+      ))}
+      <li class="py-4"><a href={site.phoneHref} class="btn btn-primary w-full">Sună: {site.phone}</a></li>
+    </ul>
+  </nav>
+</header>
+<div style="height:var(--header-h)" aria-hidden="true"></div>
+
+<style>
+  .nav-link::after { content: ""; position: absolute; left: 0.625rem; right: 0.625rem; bottom: 2px; height: 2px; border-radius: 2px; background: var(--color-primary); transform: scaleX(0); transform-origin: left; transition: transform 0.25s var(--ease-out-soft); }
+  .nav-link:hover::after, .nav-link[aria-current="page"]::after { transform: scaleX(1); }
+</style>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+  const menu = document.getElementById('mobile-menu');
+  toggle?.addEventListener('click', () => {
+    const open = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!open));
+    menu?.classList.toggle('hidden', open);
+  });
+  menu?.querySelectorAll('a').forEach((a) =>
+    a.addEventListener('click', () => {
+      toggle?.setAttribute('aria-expanded', 'false');
+      menu.classList.add('hidden');
+    }),
+  );
+</script>

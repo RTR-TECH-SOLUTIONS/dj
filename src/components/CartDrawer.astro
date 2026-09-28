@@ -1,0 +1,82 @@
+---
+import { u } from '../lib/url';
+// Cerere de ofertă (nu checkout): la fel ca rentech / nanevents în piață.
+---
+
+<dialog id="cart" aria-labelledby="cart-title" class="cart m-0 ml-auto h-dvh max-h-dvh w-full max-w-[440px] border-l border-line bg-bg p-0 text-ink backdrop:bg-black/60">
+  <form id="cart-form" class="flex h-full flex-col" novalidate>
+    <div class="flex items-center justify-between border-b border-line px-5" style="height:var(--header-h)">
+      <h2 id="cart-title" class="text-lg font-bold">Coșul tău</h2>
+      <button type="button" data-cart-close class="btn btn-secondary btn-sm" aria-label="Închide">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+
+    <div class="flex-1 overflow-y-auto px-5 py-5">
+      <p data-cart-empty class="rounded-xl border border-dashed border-line p-5 text-sm text-muted">
+        Nu ai adăugat nimic încă. Alege echipamente din <a href={u('/echipamente')} class="text-ink underline underline-offset-4">catalog</a> sau un <a href={u('/#pachete')} class="text-ink underline underline-offset-4">pachet</a>.
+      </p>
+      <ul data-cart-list class="divide-y divide-line"></ul>
+
+      <fieldset data-cart-details class="mt-6 space-y-4">
+        <legend class="mb-3 text-sm font-semibold">Perioada și detaliile evenimentului</legend>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="label" for="c-from">Ridicare / livrare</label>
+            <input class="field" type="date" id="c-from" name="from" required />
+          </div>
+          <div>
+            <label class="label" for="c-to">Returnare</label>
+            <input class="field" type="date" id="c-to" name="to" required />
+          </div>
+        </div>
+        <div>
+          <label class="label" for="c-delivery">Transport</label>
+          <select class="field" id="c-delivery" name="delivery">
+            <option value="0">Ridic eu de la depozit (Sector 2)</option>
+            <option value="150">Livrare + montaj în București (150 RON)</option>
+            <option value="250">Livrare + montaj în Ilfov (250 RON)</option>
+          </select>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="label" for="c-name">Nume</label>
+            <input class="field" id="c-name" name="name" autocomplete="name" required />
+          </div>
+          <div>
+            <label class="label" for="c-phone">Telefon</label>
+            <input class="field" id="c-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required />
+          </div>
+        </div>
+        <div>
+          <label class="label" for="c-type">Tip eveniment</label>
+          <select class="field" id="c-type" name="type">
+            <option>Nuntă</option><option>Botez</option><option>Petrecere privată</option><option>Corporate</option><option>Concert / outdoor</option><option>Altul</option>
+          </select>
+        </div>
+      </fieldset>
+    </div>
+
+    <div class="border-t border-line bg-card px-5 py-4">
+      <dl class="tnum space-y-1 text-sm">
+        <div class="flex justify-between text-muted"><dt>Echipamente / zi</dt><dd data-sum-day>0 RON</dd></div>
+        <div class="flex justify-between text-muted"><dt>Zile</dt><dd data-sum-days>1</dd></div>
+        <div class="flex justify-between text-muted"><dt>Transport</dt><dd data-sum-delivery>0 RON</dd></div>
+        <div class="flex justify-between pt-1 text-base text-ink"><dt>Estimat</dt><dd data-sum-total class="font-bold text-price">0 RON</dd></div>
+      </dl>
+      <p data-cart-error role="alert" class="mt-2 hidden text-sm text-primary"></p>
+      <button type="submit" class="btn btn-primary mt-3 w-full">Trimite cererea de ofertă</button>
+      <p class="mt-2 text-xs text-muted">Nu plătești nimic acum. Confirmăm disponibilitatea și prețul final în maximum o oră, în programul depozitului.</p>
+    </div>
+  </form>
+</dialog>
+
+<style>
+  .cart[open] { animation: slide 0.22s ease-out; }
+  @keyframes slide { from { transform: translateX(24px); opacity: 0; } }
+</style>
+
+<script>
+  import { initCart } from '../scripts/cart';
+  initCart();
+</script>

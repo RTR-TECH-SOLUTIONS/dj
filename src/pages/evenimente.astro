@@ -1,0 +1,254 @@
+---
+import { u } from '../lib/url';
+import Layout from '../layouts/Layout.astro';
+import Icon from '../components/Icon.astro';
+import { upcoming, past, eventTypes, fmtDate } from '../data/events';
+import { site, waLink } from '../data/site';
+import { unsplash } from '../lib/img';
+
+const booked = upcoming.map((e) => e.date);
+const stats = [['~60', 'Nunți pe an'], ['12', 'Ani ca DJ'], ['4,9', 'Nota pe Google']];
+const process = [
+  { icon: 'chat', title: 'Întâlnirea cu mirii', text: 'Cu o lună înainte stabilim momentele serii și ce melodii nu vreți să auziți.' },
+  { icon: 'headphones', title: 'Muzică pentru toate vârstele', text: 'Hituri românești și internaționale, muzică de petrecere la cerere, iar spre final house și disco.' },
+  { icon: 'sliders', title: 'Predarea cu formația', text: 'Cânt în pauzele formației pe aceeași sonorizare, fără pauze moarte între seturi.' },
+  { icon: 'truck', title: 'Echipament propriu', text: 'Boxe, sistem DJ, lumini și fum greu din depozitul nostru, plus un set de rezervă.' },
+];
+---
+
+<Layout title={`Evenimente ${site.djName}: nunți, corporate, club | ${site.city}`} description={`Calendarul ${site.djName}: evenimente viitoare, galerie și disponibilitate pentru nunți și petreceri în ${site.city}.`}>
+  <section class="border-b border-line bg-bg-alt">
+    <div class="wrap py-12 text-center sm:py-16">
+      <span class="ev-in inline-flex items-center gap-2.5 rounded-lg border border-primary/40 bg-primary/10 px-4 py-1.5 text-sm font-medium text-primary" style="--d:0"><span class="eq h-3"><i></i><i></i><i></i><i></i></span>DJ pentru nunți și evenimente</span>
+      <h1 class="ev-in mt-6 text-[clamp(2rem,4.5vw,3.25rem)] font-bold tracking-tight" style="--d:1">Evenimente <span class="text-primary">{site.djName}</span></h1>
+      <p class="ev-in mx-auto mt-3 max-w-xl text-muted" style="--d:2">Unde cânt în perioada următoare, evenimentele recente și verificarea disponibilității pentru data ta.</p>
+      <div class="ev-in mt-8 flex flex-wrap justify-center gap-3" style="--d:3">
+        <a href="#disponibilitate" class="btn btn-primary">Verifică o dată</a>
+        <a href="#arhiva" class="btn btn-secondary">Galerie evenimente</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- DESPRE DJ -->
+  <section class="section" aria-labelledby="about-title">
+    <div class="wrap">
+      <div class="card grid overflow-hidden lg:grid-cols-2" data-reveal>
+        <div class="relative min-h-[320px]">
+          <img src={unsplash('photo-1784019841786-e038d97e3d54', 1000, 900)} alt={`Pupitrul ${site.djName} în timpul unui eveniment`} width="1000" height="900" class="absolute inset-0 h-full w-full object-cover" />
+        </div>
+        <div class="p-7 sm:p-10">
+          <h2 id="about-title" class="text-[clamp(1.6rem,2.6vw,2rem)] font-bold">Despre {site.djName}</h2>
+          <p class="mt-4 leading-relaxed text-muted">
+            Cânt la nunți, botezuri, petreceri corporate și în cluburi din {site.city} din 2014. Aceeași echipă se ocupă și de închirierile de sonorizare, așa că vin cu echipamentul nostru și știu exact cum sună în fiecare sală.
+          </p>
+          <dl class="tnum mt-8 grid grid-cols-3 gap-3">
+            {stats.map(([n, l]) => (
+              <div class="flex flex-col-reverse rounded-xl border border-line bg-secondary/50 p-4 text-center">
+                <dt class="text-xs text-muted">{l}</dt>
+                <dd class="text-2xl font-bold">{n}</dd>
+              </div>
+            ))}
+          </dl>
+          <ul class="mt-6 flex flex-wrap gap-2 text-sm">
+            {['Hituri românești', 'Internațional 80s–2020s', 'Muzică de petrecere', 'House', 'Disco pe vinil'].map((g) => (
+              <li class="rounded-md border border-line px-2.5 py-1 text-muted">{g}</li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- URMATOARELE -->
+  <section class="section pt-0" aria-labelledby="next-title">
+    <div class="wrap">
+      <div class="section-head" data-reveal>
+        <h2 id="next-title">Următoarele evenimente</h2>
+        <p>Evenimentele publice au intrare liberă sau bilet la locație. Cele private apar doar ca dată ocupată.</p>
+      </div>
+      <ol class="mx-auto mt-10 grid max-w-4xl gap-3">
+        {upcoming.map((e, i) => {
+          const d = fmtDate(e.date);
+          return (
+            <li class="card flex items-center gap-4 p-4 transition-colors hover:border-line-strong sm:gap-5 sm:p-5" data-reveal style={`--i:${i % 4}`}>
+              <div class="tnum grid h-16 w-16 shrink-0 place-content-center rounded-xl bg-secondary text-center">
+                <span class="text-2xl font-bold leading-none">{d.day}</span>
+                <span class="mt-1 text-xs uppercase text-muted">{d.month}</span>
+              </div>
+              <div class="min-w-0 flex-1">
+                <p class="eyebrow">{e.type} · {d.weekday} {d.year}{e.time ? ` · ${e.time}` : ''}</p>
+                <h3 class="mt-1 truncate font-bold">{e.isPublic ? e.title : { Nuntă: 'Nuntă', Corporate: 'Petrecere corporate', Club: 'Eveniment în club', Privat: 'Eveniment privat' }[e.type]}</h3>
+                <p class="flex items-center gap-1.5 text-sm text-muted"><Icon name="pin" size={14} />{e.place}</p>
+              </div>
+              {e.isPublic
+                ? <span class="hidden shrink-0 rounded-md bg-primary/15 px-2.5 py-1 text-xs font-semibold text-primary sm:inline">Public</span>
+                : <span class="hidden shrink-0 rounded-md bg-secondary px-2.5 py-1 text-xs font-semibold text-muted sm:inline">Privat</span>}
+            </li>
+          );
+        })}
+      </ol>
+    </div>
+  </section>
+
+  <!-- DISPONIBILITATE -->
+  <section id="disponibilitate" class="section bg-bg-alt" aria-labelledby="av-title">
+    <div class="wrap">
+      <div class="section-head" data-reveal>
+        <h2 id="av-title">Sunt liber la data ta?</h2>
+        <p>Sâmbetele din sezonul de nunți (mai–septembrie) se rezervă de obicei cu 8–12 luni înainte.</p>
+      </div>
+      <form id="av-form" class="card mx-auto mt-10 max-w-2xl p-6 sm:p-8" novalidate data-reveal="zoom">
+        <label class="label" for="av-date">Data evenimentului</label>
+        <div class="flex gap-2">
+          <input id="av-date" type="date" class="field h-12 flex-1" required />
+          <button class="btn btn-primary h-12">Verifică</button>
+        </div>
+        <div id="av-result" class="mt-4 hidden rounded-xl border p-4" aria-live="polite"></div>
+        <p class="mt-6 text-sm text-muted">Sâmbete libere în următoarele 10 săptămâni:</p>
+        <ul id="free-sats" class="tnum mt-2 flex flex-wrap gap-2 text-sm"></ul>
+      </form>
+    </div>
+  </section>
+
+  <!-- CUM LUCREZ -->
+  <section class="section" aria-labelledby="proc-title">
+    <div class="wrap">
+      <div class="section-head" data-reveal>
+        <h2 id="proc-title">Cum lucrez la o nuntă</h2>
+        <p>Ce se întâmplă din momentul în care rezervați data până la ultima melodie.</p>
+      </div>
+      <ul class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {process.map((p, i) => (
+          <li class="card p-6" data-reveal style={`--i:${i}`}>
+            <span class="grid h-12 w-12 place-items-center rounded-xl border border-line bg-secondary text-primary"><Icon name={p.icon} size={20} /></span>
+            <h3 class="mt-5 font-bold">{p.title}</h3>
+            <p class="mt-1.5 text-sm leading-relaxed text-muted">{p.text}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- ARHIVA -->
+  <section id="arhiva" class="section bg-bg-alt" aria-labelledby="arch-title">
+    <div class="wrap">
+      <div class="section-head" data-reveal>
+        <h2 id="arch-title">Evenimente recente</h2>
+        <p>Fotografii de la evenimentele la care am cântat, cu echipamentele folosite.</p>
+      </div>
+      <div class="mt-8 flex flex-wrap justify-center gap-2" data-reveal role="group" aria-label="Filtru tip eveniment">
+        <button type="button" class="filter-btn" data-type="all" aria-pressed="true">Toate</button>
+        {eventTypes.map((t) => <button type="button" class="filter-btn" data-type={t} aria-pressed="false">{t}</button>)}
+      </div>
+      <div class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {past.map((e, i) => {
+          const d = fmtDate(e.date);
+          return (
+            <article class="card group overflow-hidden transition-colors hover:border-line-strong" data-event={e.type} data-reveal style={`--i:${i % 3}`}>
+              <div class="aspect-[4/3] overflow-hidden">
+                <img src={unsplash(e.img, 720, 540)} alt={`${e.title}, ${e.place}`} width="720" height="540" loading="lazy" class="h-full w-full object-cover transition-transform duration-300 ease-out group-hover:scale-[1.06]" />
+              </div>
+              <div class="p-5">
+                <p class="eyebrow">{e.type} · {d.day} {d.month} {d.year}</p>
+                <h3 class="mt-1.5 font-bold">{e.title}</h3>
+                <p class="mt-1 text-sm text-muted">{e.place} · {e.guests} de invitați</p>
+                <p class="mt-4 border-t border-line pt-3 text-xs leading-relaxed text-muted"><span class="font-semibold text-ink">Echipamente:</span> {e.setup}</p>
+              </div>
+            </article>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section">
+    <div class="wrap">
+      <div class="card mx-auto max-w-4xl p-8 text-center sm:p-12" data-reveal="zoom">
+        <h2 class="text-[clamp(1.6rem,3vw,2.25rem)] font-bold">Vrei DJ și sonorizare de la același furnizor?</h2>
+        <p class="mx-auto mt-3 max-w-lg text-muted">Spune-ne data, locația și numărul de invitați și îți trimitem o ofertă pentru DJ și echipamente.</p>
+        <div class="mt-8 flex flex-wrap justify-center gap-3">
+          <a class="btn btn-primary" href={waLink(`Bună! Aș vrea să rezerv ${site.djName} pentru un eveniment pe data de …`)} target="_blank" rel="noopener">Rezervă pe WhatsApp</a>
+          <a class="btn btn-secondary" href={site.phoneHref}><Icon name="phone" size={16} />{site.phone}</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .ev-in { animation: evIn 0.9s cubic-bezier(0.22, 1, 0.36, 1) both; animation-delay: calc(var(--d) * 90ms + 80ms); }
+  @keyframes evIn { from { opacity: 0; transform: translateY(16px); } }
+  .filter-btn {
+    height: 38px;
+    padding-inline: 1rem;
+    border: 1px solid var(--color-line);
+    border-radius: 12px;
+    background: var(--color-card);
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: border-color 0.15s ease-out, background-color 0.15s ease-out;
+  }
+  .filter-btn:hover { border-color: var(--color-line-strong); }
+  .filter-btn[aria-pressed='true'] { border-color: var(--color-primary); background: color-mix(in srgb, var(--color-primary) 12%, transparent); }
+</style>
+
+<script define:vars={{ booked, wa: site.whatsapp, dj: site.djName }}>
+  // TODO(real): disponibilitatea vine din calendarul DJ-ului (Google Calendar / CMS).
+  const fmt = (d) => d.toLocaleDateString('ro-RO', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+  const iso = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+
+  const form = document.getElementById('av-form');
+  const input = document.getElementById('av-date');
+  const out = document.getElementById('av-result');
+  input.min = iso(new Date());
+
+  function check() {
+    if (!input.value) {
+      out.className = 'mt-4 rounded-xl border border-line p-4 text-sm text-muted';
+      out.textContent = 'Alege o dată din calendar.';
+      return;
+    }
+    const date = new Date(input.value + 'T12:00:00');
+    const busy = booked.includes(input.value);
+    out.className = `mt-4 rounded-xl border p-4 ${busy ? 'border-red-500/30 bg-red-500/10' : 'border-green-500/30 bg-green-500/10'}`;
+    const msg = encodeURIComponent(`Bună! Aș vrea să rezerv ${dj} pentru ${fmt(date)}. Tip eveniment: … Locație: …`);
+    out.innerHTML = busy
+      ? `<p class="font-bold text-red-300">Ocupat pe ${fmt(date)}</p><p class="mt-1 text-sm text-muted">Îți putem recomanda un coleg DJ, iar sonorizarea o asigurăm tot noi.</p>`
+      : `<p class="font-bold text-green-300">Liber pe ${fmt(date)}</p><p class="mt-1 text-sm text-muted">Data se blochează după confirmarea avansului.</p><a class="btn btn-primary btn-sm mt-3" target="_blank" rel="noopener" href="https://wa.me/${wa}?text=${msg}">Rezervă data pe WhatsApp</a>`;
+  }
+  form.addEventListener('submit', (e) => { e.preventDefault(); check(); });
+
+  // sâmbete libere
+  const list = document.getElementById('free-sats');
+  const d = new Date();
+  d.setDate(d.getDate() + ((6 - d.getDay() + 7) % 7 || 7));
+  for (let i = 0; i < 10; i++) {
+    const s = iso(d);
+    if (!booked.includes(s)) {
+      const li = document.createElement('li');
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'rounded-lg border border-line bg-secondary px-3 py-1.5 hover:border-primary';
+      b.textContent = d.toLocaleDateString('ro-RO', { day: 'numeric', month: 'short' });
+      b.addEventListener('click', () => { input.value = s; check(); });
+      li.append(b);
+      list.append(li);
+    }
+    d.setDate(d.getDate() + 7);
+  }
+
+  // filtru galerie
+  const chips = [...document.querySelectorAll('[data-type]')];
+  const cards = [...document.querySelectorAll('[data-event]')];
+  chips.forEach((c) => c.addEventListener('click', () => {
+    chips.forEach((x) => x.setAttribute('aria-pressed', String(x === c)));
+    let k = 0;
+    cards.forEach((card) => {
+      const show = c.dataset.type === 'all' || card.dataset.event === c.dataset.type;
+      card.hidden = !show;
+      card.classList.add('is-in');
+      if (show) card.animate([{ opacity: 0, transform: 'translateY(14px)' }, { opacity: 1, transform: 'none' }], { duration: 450, delay: k++ * 60, easing: 'cubic-bezier(0.22,1,0.36,1)', fill: 'backwards' });
+    });
+  }));
+</script>

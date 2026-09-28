@@ -1,0 +1,37 @@
+---
+import type { Item } from '../data/equipment';
+import { categories } from '../data/equipment';
+import Icon from './Icon.astro';
+
+interface Props { item: Item; eager?: boolean }
+const { item, eager = false } = Astro.props;
+const cat = categories.find((c) => c.id === item.category)!;
+const search = `${item.name} ${cat.label} ${cat.keywords} ${item.desc}`.toLowerCase();
+---
+
+<article class="card lift group flex flex-col overflow-hidden" data-item data-cat={item.category} data-name={search}>
+  <div class="relative aspect-square overflow-hidden bg-[radial-gradient(circle_at_50%_45%,var(--color-secondary)_0%,var(--color-card)_70%)]">
+    <img
+      src={item.img}
+      alt={item.name}
+      width="1000"
+      height="800"
+      loading={eager ? 'eager' : 'lazy'}
+      decoding="async"
+      class="absolute inset-0 h-full w-full object-contain p-8 drop-shadow-[0_18px_24px_rgba(0,0,0,0.45)] transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.06] group-hover:-translate-y-1"
+    />
+    <span class={`absolute right-3 top-3 rounded-md bg-bg/80 px-2 py-1 text-xs font-medium backdrop-blur ${item.stock <= 2 ? 'text-primary' : 'text-muted'}`}>{item.stock <= 2 ? `Doar ${item.stock} în depozit` : `${item.stock} buc. în depozit`}</span>
+  </div>
+  <div class="flex flex-1 flex-col border-t border-line/60 p-5">
+    <p class="eyebrow">{cat.label}</p>
+    <h3 class="mt-1.5 font-bold leading-snug">{item.name}</h3>
+    <p class="mt-1.5 line-clamp-2 flex-1 text-sm text-muted">{item.desc}</p>
+    <div class="mt-4 flex items-center justify-between gap-3">
+      <p class="tnum"><span class="text-lg font-bold text-price">{item.price} RON</span><span class="text-sm text-muted"> / {item.unit ? `${item.unit} / zi` : 'zi'}</span></p>
+      <button type="button" class="btn btn-primary btn-sm" data-add={item.id} aria-label={`Adaugă ${item.name} în coș`}>
+        <Icon name="cart" size={14} />
+        <span data-add-label>Adaugă</span>
+      </button>
+    </div>
+  </div>
+</article>
